@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../../css/styles.css">
+
+</head>
+
+<body>
+    
+<div class="container">
+
+    <header class="centerContent">
+        <nav>
+            <button id = "homeBtn"    onclick = "window.location.href = 'index.html'">Home</button>
+            <button id = "createBtn"  onclick = "window.location.href = '../../CreateScreen/en/index.html'">Create indicator</button>
+            <button id = "importsBtn" onclick = "window.location.href = '../../Imports/en/index.html'">Imports</button>
+            <button id = "plotsBtn"   onclick = "window.location.href = '../../Plots/en/index.html'">Plots</button>
+            <button id = "inputsBtn"  onclick = "window.location.href = '../../Inputs/en/index.html'">Inputs</button>
+        </nav>
+    </header>
+
+<span class="title fontBold fontSize26"><i>Initial screen presentation</i></span>
+
+<pre class="flex fontSize16"> 
+<span class="topics fontBold">1st Create a list of symbols</span> 
+
+<img src="../img/screen1.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 300px; width: 420px;"/>
+
+The <mark>+</mark> button creates a new item in the list on the left, double-click the new item to rename it
+
+buttons <mark>></mark> and <mark><</mark> are used to move values from one list to another.
+
+The <mark>remove</mark> button deletes the selected value from any list.
+
+** <strong>Note: After any change, you need to save!!!</strong>
+
+<span class="topics fontBold">2nd Manipulate the list for observation and select the desired period</span> 
+
+<img src="../img/screen2.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 280px; width: 500px;"/>
+
+* 1 – Select the exchange, there are 2 options, <mark>yFinance</mark> and <mark>binance</mark>.
+
+<strong>** Note: If you choose binance, you need to access the 'ApiKey Binance' menu and enter your private key created in your binance account.</strong>
+
+<img src="../img/apikey.png" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 500px; height: 100px;"/>
+
+* 2 – Left list, registered values.  
+* 3 – Right list, values to be observed.  
+* 4 – Timeframe selector.  
+* 5 – Month and year selector.  
+* 6 – Days table, you need to click on a day to validate the date.  
+* 7 – Time in which the files will be updated for data reading.  
+* 8 – Save the changes made or update the files of the selected symbols.  
+
+<span class="topics fontBold">3rd Remove symbols that you no longer want to observe</span> 
+
+<img src="../img/screen3.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 340px; width: 450px;"/>
+
+* Use the <mark><</mark> button to remove symbols from the right list that you no longer want to observe.  
+** Use the <mark>ctrl</mark> key for multiple selection!!!  
+
+* Then use the <mark>save/update</mark> button to confirm the changes.
+
+<span class="topics fontBold">4th Starting the service and creating a custom indicator</span> 
+
+<img src="../img/screen4.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 330px; width: 450px;"/>
+
+* 9 – Starts the service, it will open the browser with the saved data.
+
+<strong>** Note: If you uncheck the checkbox and check it again, if it doesn't turn green, uncheck it and wait a few seconds for the previous service to finish completely.  
+    If the checkbox is checked and is not <mark>green</mark>, it will not update the data.</strong>
+
+* 10 – Screen for creating indicators.
+
+<strong>** Note: When creating a new indicator, you need to restart the Run Dash service for the indicator to appear on the chart screen.</strong>
+
+* 11 – Opens a log screen.
+
+<img src="../img/screen5.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 330px; width: 450px;"/>
+
+<img src="../img/log.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 330px; width: 450px;"/>
+</pre>
+<pre class="flex fontRegular fontSize18">
+<span class="title fontBold fontSize26"><i>Presentation of the chart screen</i></span>
+
+* 1 – Selector of values that were saved in the right list on the initial screen.
+
+<strong>** Note: When moving the chart, its positioning will be saved, and when changing the symbol, you need to wait until the new chart appears in its original scale to make adjustments if necessary.  
+    If you don't wait, the chart will be generated in the wrong scale.</strong>
+
+* 2 – List of indicators, indicators created by the <mark>Create indicator</mark> button should appear here.  
+    ** There is a file that saves the selected indicators with their respective values.
+
+* 3 – Chart update time, this is different from the time in seconds that updates the files on the initial screen.  
+    ** If necessary, you can pause the chart update to maintain a study line.
+
+* 4 – Last price.
+
+* 5 – Input selector, choose which input you want to configure from the list and use the <mark>Open</mark> button. .
+
+* 6 – Toolbar, in this case, you need to pause the chart update.
+
+<img src="../img/plotly.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 330px; width: 850px;"/>
+
+
+<img src="../img/used.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 360px; width: 900px;"/>
+</pre>
+
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>  

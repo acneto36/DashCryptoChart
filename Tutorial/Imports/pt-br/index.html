@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Imports</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../../css/styles.css">
+
+</head>
+<body>
+    
+
+<div class="container">
+
+    <header class="centerContent">
+        <nav>
+            <button id = "homeBtn"    onclick = "window.location.href = '../../InitialScreen/pt-br/index.html'">Home</button>
+            <button id = "createBtn"  onclick = "window.location.href = '../../CreateScreen/pt-br/index.html'">Criar indicador</button>
+            <button id = "importsBtn" onclick = "window.location.href = '../../Imports/pt-br/index.html'">Imports</button>
+            <button id = "plotsBtn"   onclick = "window.location.href = '../../Plots/pt-br/index.html'">Plots</button>
+            <button id = "inputsBtn"  onclick = "window.location.href = '../../Inputs/pt-br/index.html'">Inputs</button>
+        </nav>
+    </header>
+
+
+    <span class="title fontBold fontSize26"><i>Explicação imports</i></span>
+
+    <pre class="flex">
+        <span class="parameterColor fontSize22">mPlots</span>:     <span class="fontSize18">Explicado em <mark>Plots</mark></span>
+        <span class="parameterColor fontSize22">mWidgets</span>: <span class="fontSize18">Explicado em <mark>Inputs</mark></span>    
+    </pre>
+
+                                    <!-- DATA SERIES -->
+<span class="section parameterColor fontBold fontSize22"><i>mDataSeries</i></span>
+
+<pre class="flex fontSize18 fontRegular tab1">
+<span class="fontBold">* Retorna lista de serie histórica dos candles</span>
+<code class="codeFunc">
+dates( df: pd.DataFrame )
+- Retorna uma lista contendo datas.
+
+opens( df: pd.DataFrame )
+- Retorna uma lista contendo preços de abertura.
+
+highs( df: pd.DataFrame )
+- Retorna uma lista contendo preços de máxima.
+
+lows( df: pd.DataFrame )
+- Retorna uma lista contendo preços de mínima.
+
+closes( df: pd.DataFrame )
+- Retorna uma lista contendo preços de fechamento.
+
+volumes( df: pd.DataFrame )
+- Retorna uma lista contendo volumes.
+
+indexes( df: pd.DataFrame )
+- Retorna uma lista contendo index.
+
+size( df: pd.DataFrame )
+- retorna o tamanho total da serie disponível.
+</code>
+</pre>
+                                  <!-- FORMAT NUMBER -->
+<span class="section parameterColor fontBold fontSize22"><i>mFormatNumber</i></span>
+
+<pre class="flex fontSize18 fontRegular tab1">
+<span class="fontBold">* Métodos para formatar números com casa decimal muito grande</span>
+<code class="codeFunc">
+scientificNotation( number ) -> bool
+- Retorna verdadeiro se o número estiver em notação científica.
+
+formatNumber( number ) -> str
+- Faz uso do método <span class="functionColor fontBold">scientificNotation</span>
+- Número float 10.1221212, converte para 10.122, limita para 3 casas decimais.  
+- Número float 0.0000052505211455 limita para 10 casas decimais.
+
+decimalFormat( number ) -> str
+- Método isolado para limitar número float em 3 casas decimais.
+</code>
+</pre>
+                                   <!-- COLLECTION -->
+<span class="section parameterColor fontBold fontSize22"><i>mCollection</i></span>
+    
+<pre class="flex fontSize18 fontRegular tab1">
+<span class=" fontBold">* Conjunto de métodos úteis para extrair algum valor específico</span>  
+<code class="codeFunc">
+selectDay(
+   df:     pd.DataFrame, 
+   numDay: int = 1
+) -> int
+- Retorna o candle de abertura de X dias anteriores escolhido.
+
+indexByDate(
+    df:   pd.DataFrame,
+    date: str
+) -> int
+- Retorna o index de uma data específica, ex: "2024-05-20 09:00" ou a data através da série 'dates' devidamente convertido para string.
+    
+maxPrice(
+    df:         pd.DataFrame, 
+    startIndex: int, 
+    endIndex:   int
+) -> float
+- Retorna o preço máximo de um determinado range de candles.
+
+minPrice(
+    df:         pd.DataFrame, 
+    startIndex: int, 
+    endIndex:   int
+) -> float
+- Retorna o preço mínimo de um determinado range de candles.
+    
+indexMaxPrice(
+    df:         pd.DataFrame, 
+    startIndex: int, 
+    endIndex:   int
+) -> int
+- Retorna o index do preço máximo de um range.
+    
+indexMinPrice(
+    df:         pd.DataFrame, 
+    startIndex: int, 
+    endIndex:   int
+) -> int
+- Retorna o index do preço mínimo de um range.
+
+shiftDateHours(
+    date:  pd.Timestamp, 
+    shift: int
+) -> pd.Timestamp
+- Passando uma data desloca para <mark>+</mark> horas ou <mark>-</mark> horas.
+
+shiftDateMinutes(
+    date:  pd.Timestamp, 
+    shift: int
+) -> pd.Timestamp
+- Passando uma data desloca para <mark>+</mark> minutos ou <mark>-</mark> minutos.
+
+pdDatetime(
+    date: str
+) -> pd.Timestamp
+- Retorna uma data no formato pandas datetime.
+
+hexcolorToRgba(
+    hexColor: str, 
+    alpha:  float
+) -> str
+- Converte cor hexadecimal para rgba
+
+valuesInList(
+    lstSrc:          list, 
+    lstDefaultValue: list
+) -> list
+- Utilizado em inputs para garantir valores a lista.
+
+</code>
+</pre>
+                                <!-- WRITE READ INPUT -->
+<span class="section parameterColor fontBold fontSize22"><i>mWriteReadInput</i></span>
+    
+<pre class="flex fontSize18 fontRegular tab1">
+<span class="fontBold">* Manipulação de arquivo de texto</span> 
+<code class="codeFunc">
+writeFile( value, pathFile )
+- Grava valores em um arquivo de texto. 
+
+readFile( pathFile ) -> list
+- Retorna uma lista, 'utilização em loop'
+- Selecionar o index da linha do conteúdo se existir apenas uma linha.
+* Utilize 'myFile = readFile(myPath)[0]'
+
+writeInput( pathFile, symbol, lstInputs, isHistogram, heightHistogram )
+- Método utilizado para gravar valores de inputs de indicadores.
+* Será melhor explicado no tutorial para inputs.
+
+readingInput( pathFile, symbol ) -> list
+- Método que lê os valores que serão utilizados nos indicadores para carregar valores padrão. 
+* Será melhor explicado no tutorial para inputs.
+</code>
+</pre>
+                    <!-- LIBS -->
+<span class="section parameterColor fontBold fontSize22"><i>libs</i></span>
+
+<pre class="flex fontSize18 fontRegular tab1">
+<span class="fontBold">* Contém métodos para indicador</span>
+<code class="codeFunc">
+MA(
+    srcPrice: list, 
+    period:   int, 
+    avgType:  str
+)
+- Retorna uma lista de médias.
+- avgType: 'sma', 'ema', 'wma', 'smma', 'zlema'
+* A lista retornada terá o seu tamanho menor que a lista original enviada por parâmetro.
+Lembrar deste detalhe ao iterar a lista de médias em um loop, observe os exemplos nos indicadores do projeto.
+    
+VWAP(
+    lstPrice:  list,
+    lstVolume: list,
+    startIndex: int 
+)
+- A partir do parâmetro startIndex será iniciado o cálculo da vwap.
+- Retorna uma lista com preços do cálculo da vwap.
+
+STDDEV(
+    srcPrice: list, 
+    period:   int
+)
+- Retorna uma lista de valores do 'Standard deviation (STDDEV)'
+    
+ATR(
+    highList:  list,
+    lowList:   list,
+    closeList: list, 
+    period:     int
+)
+- Retorna uma lista de valores 'Average True Range (ATR)'
+</code>
+</pre>
+
+<span class="section parameterColor fontBold fontSize22"><i>mWriteLog e mConsole</i></span>
+
+<pre class="flex fontSize18 fontRegular tab1">
+<code class="codeFunc">
+* mWriteLog - Responsável por gravar em log erros ocorridos nos indicadores.
+    Não tem utilidade para o usuário, é um import automático.
+    
+* mConsole  - Utilizado dentro de indicadores e inputs para verificar valores de variáveis e etc.
+    Passar como string console(f'variavel {var}')
+
+</code>
+</pre>
+
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>  

@@ -1,0 +1,2 @@
+Binance, 1_Hour
+yFinance, 1h

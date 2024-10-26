@@ -1,0 +1,2 @@
+BTCUSDT, LastPrice, ImpulseMACD
+BTC-USD, LastPrice

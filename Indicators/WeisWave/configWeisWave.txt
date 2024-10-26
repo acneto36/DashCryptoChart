@@ -1,0 +1,3 @@
+DOGEUSDT; 30; 3.0; Invert; #5cfffe; #da2506
+BTCUSDT; 30; 0.4; Invert; green; orange
+LUNCUSDT; 15; 2.9; Invert; #5cfffe; #da2506

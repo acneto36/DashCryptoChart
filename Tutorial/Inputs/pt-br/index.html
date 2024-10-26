@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inputs</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../../css/styles.css">
+
+</head>
+
+<body>
+    
+
+<div class="container">
+
+    <header class="centerContent">
+        <nav>
+            <button id = "homeBtn"    onclick = "window.location.href = '../../InitialScreen/pt-br/index.html'">Home</button>
+            <button id = "createBtn"  onclick = "window.location.href = '../../CreateScreen/pt-br/index.html'">Criar indicador</button>
+            <button id = "importsBtn" onclick = "window.location.href = '../../Imports/pt-br/index.html'">Imports</button>
+            <button id = "plotsBtn"   onclick = "window.location.href = '../../Plots/pt-br/index.html'">Plots</button>
+            <button id = "inputsBtn"  onclick = "window.location.href = '../../Inputs/pt-br/index.html'">inputs</button>
+        </nav>
+    </header>
+
+<span class="title fontBold fontSize26"><i>Lista de inputs</i></span>
+
+<pre class="fontRegular fontSize16 tab1">
+<code class="code">
+    »»»»»»»»»»»»»»»»» IMPORTS INPUT «««««««««««««««««
+
+import os
+import sys
+import traceback
+import mttkinter     as mtk
+import customtkinter as ctk
+from   tkinter   import messagebox
+
+from   CreateIndicator.Plots.mWriteReadInput import * 
+from   CreateIndicator.Extra.collection      import *
+from   CreateIndicator.Extra.mWidgets        import * 
+from   CreateIndicator.Extra.mConsole        import console 
+from   DataFrames.mFormatNumber              import * 
+from   DataFrames.mDataSeries                import * 
+from   SystemFiles.mWriteLog                 import * 
+from   paths                                 import PATH_Icon
+
+    »»»»»»»»»»»»»»»»»»»»»»» «««««««««««««««««««««««««
+</code>  
+</pre>
+
+<span class="section fontBold fontSize22"><i>Explicação sobre os inputs</i></span>
+
+<pre class="flex fontSize18 fontRegular tab1">
+* Particularidades no posicionamento dos widgtes.
+    Separado em duas categorias, <mark>Individual</mark> e <mark>Duplo</mark>.
+
+    - <mark>Individual</mark> ocupa a coluna correta passada por parâmetro.
+    - <mark>Duplo</mark> tem em sua formação 2 widgets, um <mark>Label</mark> com outro widget.
+
+    No caso do <mark>Duplo</mark> ele vai fazer o ajuste internamente para posicionar o <mark>Label</mark> na coluna passada por parâmetro e ajustando 'coluna+1' para o outro widget.
+
+    No caso do separador vertical, o ajuste interno leva em consideração 2 posições de colunas ocupadas.
+    - Caso passe por parâmetro <mark>coluna 0</mark>, internamente vai ser posicionado na <mark>coluna 2</mark>.
+        Posicionamento: Coluna parâmetro - Coluna aplicada.
+                        0                  2 
+                        1                  5
+                        2                  8
+
+<strong>* Obs: Ao utilizar widget <mark>Individual</mark> e <mark>Separador vertical</mark>, cuidar com o posicionamento do widget para não ficar em cima do <mark>separador</mark></strong>. 
+<code class="codeFunc fontSize16">
+* Exemplo:
+
+    self.frame = createFrame(self.root, row = 0, column = 0, padx = 5, pady = 5, background = '#8a8a8a')
+           
+    inputLabel(self.frame,  row = 0, column = 0, text = 'Example', textColor = 'white', background ='#575757')
+    inputEntry(self.frame,  row = 1, column = 0, text = 'Entry 1', width = 140, defaultValue = '', textType = 'text')
+    inputButton(self.frame, row = 2, column = 0, text = 'Button1', position = 'left', background = '#047e00')
+
+    createVSeparator(self.frame, row = 0, column = 0, rowspan = 3)
+
+    inputEntry(self.frame,  row = 1, column = 1, text = 'Entry 2', width = 140, defaultValue = '', textType = 'text')
+    inputButton(self.frame, row = 2, column = 4, text = 'Button2', position = 'right', background = '#7e6b00')
+
+</code>
+<img src="../img/vseparator.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 120px; width: 300px;"/>
+
+<strong>Gravar valores de input</strong>
+
+    No modelo de input gerado automático tem este código:
+
+<code class="code tab1 fontSize16">
+lstInputs     = readingInput( pathConfig, symbol )
+defaultValues = [symbol, 'entry', '5', '1.5', 'None', '0.5', '#ffffff', '2024-01-01 00:00' ] # Examble default values, only string!
+_, value1, value2, value3, value4, value5, value6, value7 = valuesInList(lstInputs, defaultValues)
+</code>
+
+    Precisa garantir valores no arquivo de configuração, por isso determine corretamente a quantidade de inputs neste código.
+    Na lista o primeiro valor <mark>symbol</mark> é obrigatório, todos devem ser <mark>String</mark>.
+
+    Ao utilizar os valores recebido do arquivo de configuração, fazer a conversão corretamente para o tipo correspondente.
+    <mark>int(value2)</mark>, <mark>float(value3)</mark>.....
+
+    <strong>Método responsável por gravar as configurações.</strong>
+
+<code class="code tab1 fontSize16">
+button = inputButton(self.frame, 0, 0, 'Apply', position = 'full')
+button.configure(command = lambda: self.writeInputs(pathConfig, symbol))
+
+* Para acessar valores de qualquer input utilize <strong>.value()</strong> 
+
+def writeInputs(self, path, symbol):
+
+    lstInputs = [self.entry.value(), 
+                 self.intSpinBox.value(), 
+                 self.floatSpinBox.value(), 
+                 self.optionMenu.value(), 
+                 self.slider.value(), 
+                 self.color.value(), 
+                 self.dateTime.value()]
+
+    # Indicador comum
+    writeInput(pathFile = path, symbol = symbol, lstInputs = lstInputs)
+
+    # Para uso em histograma.
+    writeInput(TruisHistograme
+        pathFile        = path, 
+        symbol          = symbol, 
+        lstInputs       = lstInputs, 
+        isHistogram     = True, 
+        heightHistogram = self.spinHeight.value()
+    )
+
+Parâmetros: 
+    <strong>isHistogram</strong> indica que vai ser um histograma e no arquivo do indicador deve estar <mark>SEPARATE_WINDOW = True</mark>.
+
+    Não precisa gravar a altura do histograma no arquivo de configuração do indicador, marcando como <mark>True</mark> será direcionado para o arquivo compartilhado pelo projeto.
+
+    <strong>heightHistogram</strong> a altura da sessão do histograma, utilizado um spinbox como exemplo.
+    A altura do histograma é opcional já que tem um valor padrão definido 3.
+</code>
+</pre>
+
+<span class="section fontBold fontSize22"><i>WIDGETS</i></span>
+<P></P>
+<span class="topics fontBold fontSize18">FRAME</span> 
+
+<pre class="flex fontSize16 fontRegular tab2">
+<code class="codeFunc">
+def createFrame(
+    window:     ctk.CTk, 
+    row:        int = 0,
+    column:     int = 0,
+    padx:       int = 2,
+    pady:       int = 2,
+    width:      int = 200,
+    height:     int = 200,
+    background: str = '#444444',
+    position:   str = 'we',
+    colspan:    int = 1
+):
+- Criação de layouts podendo fazer divisões de inputs com vários frames.
+
+<strong>* Exemplo:</strong>
+
+    self.frame1 = createFrame(self.root, row = 0, column = 0, padx = 5, pady = 5, background = '#9b6565')
+    self.frame2 = createFrame(self.root, row = 0, column = 1, padx = 5, pady = 5, background = '#e4d949')
+    self.frame3 = createFrame(self.root, row = 1, column = 0, padx = 5, pady = 5, background = '#659b7a')
+    self.frame4 = createFrame(self.root, row = 1, column = 1, padx = 5, pady = 5, background = '#8c659b')
+</code>  
+<img src="../img/frames.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 200px; width: 200px;"/>
+</pre>
+
+<span class="topics fontBold fontSize18">Input label</span> 
+
+<pre class="flex fontSize16 fontRegular tab2">
+<code class="codeFunc">
+def inputLabel(
+    frame:      ctk.CTkFrame, 
+    row:        int = 0, 
+    column:     int = 0, 
+    text:       str = 'Label', 
+    width:      int = 100,    
+    textColor:  str = 'black',
+    background: str = 'white',
+    textAlignm: str = 'left',
+    position:   str = 'left'   # 'left', 'right', 'center' or 'full'
+):
+- Widget individual, ocupa uma coluna, seu posicionamento é livre.
+</code>  
+</pre>
+
+<span class="topics fontBold fontSize18">Input button</span> 
+
+<pre class="flex fontSize16 fontRegular tab2">
+<code class="codeFunc">
+def inputButton(
+    frame:      ctk.CTkFrame, 
+    row:        int = 0, 
+    column:     int = 0, 
+    text:       str = 'button',
+    textColor:  str = 'white',
+    background: str = '#a70000',
+    position:   str = 'left'   # 'left', 'right', 'center' or 'full'
+):
+- Widget individual, ocupa uma coluna, seu posicionamento é livre.
+
+<strong>* Exemplo:</strong>
+
+self.frame = createFrame(self.root, row = 0, column = 0, padx = 5, pady = 5, background = '#8a8a8a')
+
+inputLabel(self.frame, row = 0, column = 0, text = 'Example button input', textColor = 'white', background ='#575757')
+
+inputButton(self.frame, row = 1, column = 0, text = 'Button1', position = 'left',   background = '#7e6b00')
+inputButton(self.frame, row = 2, column = 0, text = 'Button2', position = 'right',  background = '#cc7606')
+inputButton(self.frame, row = 3, column = 0, text = 'Button3', position = 'center', background = '#007e63')
+inputButton(self.frame, row = 4, column = 0, text = 'Button4', position = 'full',   background = '#7a007e')
+</code>  
+<img src="../img/button.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 200px; width: 300px;"/>
+</pre>
+<span class="topics fontBold fontSize18">Input Checkbox</span> 
+
+<pre class="flex fontSize16 fontRegular tab2">
+<code class="codeFunc">
+def inputCheckbox(
+    frame:        ctk.CTkFrame, 
+    row:          int = 0, 
+    column:       int = 0, 
+    text:         str = 'checkbox',
+    defaultValue: str = 'False', # 'String, primeira letra maiúscula True ou False'
+    textColor:    str = 'white',
+    background:   str = 'transparent',
+    position:     str = 'left'  # 'left', 'right' or 'center'
+    
+):
+- Widget individual, ocupa uma coluna, seu posicionamento é livre.
+
+<strong>* Exemplo:</strong>
+
+self.frame = createFrame(self.root, row = 0, column = 0, padx = 5, pady = 5, background = '#8a8a8a')
+
+inputLabel(self.frame, row = 0, column = 0, text = 'Example checkbox input', textColor = 'white', background ='#575757')
+
+inputCheckbox(self.frame, row = 1, column = 0, text = 'check1', textColor = '#ffe600', position = 'left')
+inputCheckbox(self.frame, row = 2, column = 0, text = 'check2', textColor = '#7aff0d', position = 'right')
+inputCheckbox(self.frame, row = 3, column = 0, text = 'check3', textColor = '#07ffde', position = 'center') 
+</code>  
+<img src="../img/checkbox.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 200px; width: 300px;"/>
+</pre>
+
+<span class="topics fontBold fontSize18">Input calendar "Date"</span> 
+
+<pre class="flex fontSize16 fontRegular tab2">
+<code class="codeFunc">
+def inputCalendar(
+    frame:    ctk.CTkFrame,
+    row:      int = 0,
+    column:   int = 0,
+    date:     str = '2024-01-01',
+    fontSize: int = 15
+):
+- Widget individual, ocupa uma coluna, seu posicionamento é livre.
+
+<strong>* Exemplo:</strong>
+
+self.frame = createFrame(self.root, row = 0, column = 0, padx = 5, pady = 5, background = '#8a8a8a')
+
+inputLabel(self.frame, row = 0, column = 0, text = 'Example calendar input', textColor = 'white', background ='#575757')
+
+inputCalendar(self.frame, row = 1, column = 0, date = '2024-01-01', fontSize = 16)
+</code>  
+<img src="../img/calendar.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 200px; width: 300px;"/>
+</pre>
+
+<span class="topics fontBold fontSize18">Input entry</span> 
+
+<pre class="flex fontSize16 fontRegular tab2">
+<code class="codeFunc">
+def inputEntry(
+    frame:        ctk.CTkFrame, 
+    row:          int = 0, 
+    column:       int = 0, 
+    text:         str = 'Label', 
+    width:        int = 100,    
+    textColor:    str = 'black',
+    background:   str = 'white',
+    defaultValue: str = '',
+    textType:     str = 'text',  # "int", "float" or "text"
+    position:     str = 'left',  # 'left', 'right', 'center' or 'full'
+    placeHolder:  str = 'Entry'
+):
+- Widget duplo, ocupa duas colunas, widget formado por <mark>Label</mark> + <mark>Entry</mark>.
+* textType: 
+    int   - Apenas número inteiro, positivo ou negativo.
+    float - Apenas número separado por <mark>ponto</mark>, positivo ou negativo. 
+    text  - Qualquer caracter.
+
+<strong>* Exemplo:</strong>
+
+self.frame = createFrame(self.root, row = 0, column = 0, padx = 5, pady = 5, background = '#8a8a8a')
+
+inputLabel(self.frame, row = 0, column = 0, text = 'Example entry input', textColor = 'white', background ='#575757')
+
+inputEntry(self.frame, row = 2, column = 0, text = 'Entry2', width = 50,  defaultValue = '2', textType = 'int',   position = 'right')  
+inputEntry(self.frame, row = 3, column = 0, text = 'Entry3', width = 50,  defaultValue = '3.0', textType = 'float', position = 'center')
+inputEntry(self.frame, row = 4, column = 0, text = 'Entry4', width = 90,  defaultValue = 'Entry 4', textType = 'text',  position = 'left')
+</code>  
+<img src="../img/entry.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 200px; width: 300px;"/>
+</pre>
+    
+<span class="topics fontBold fontSize18">Input spinbox "int"</span> 
+
+<pre class="flex fontSize16 fontRegular tab2">
+<code class="codeFunc">
+def inputIntSpinbox(
+    frame:        ctk.CTkFrame, 
+    row:          int = 0, 
+    column:       int = 0,
+    text:         str = 'Label',  
+    minimum:      int = 0, 
+    maximum:      int = 10, 
+    width:        int = 5,
+    textColor:    str = 'black',
+    background:   str = 'white',
+    defaultValue: int = 0,
+    position:     str = 'left'  # 'left', 'right' or 'center'
+):
+- Widget duplo, ocupa duas colunas, widget formado por <mark>Label</mark> + <mark>Spinbox</mark>.
+
+<strong>* Exemplo:</strong>
+
+self.frame = createFrame(self.root, row = 0, column = 0, padx = 5, pady = 5, background = '#8a8a8a')
+
+inputLabel(self.frame, row = 0, column = 0, text = 'Example intSpinbox input', textColor = 'white', background ='#575757')
+
+inputIntSpinbox(self.frame, row = 1, column = 0, text = 'Spin int 1', minimum = -10, maximum = 2000, width = 3, defaultValue = 10, position = 'right')
+inputIntSpinbox(self.frame, row = 2, column = 0, text = 'Spin int 2', minimum = -10, maximum = 2000, width = 5, defaultValue = 1000, position = 'center')
+inputIntSpinbox(self.frame, row = 3, column = 0, text = 'Spin int 3', minimum = -10, maximum = 200000, width = 7, defaultValue = 100000, position = 'left')
+</code>  
+<img src="../img/intSpin.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 200px; width: 300px;"/>
+</pre>
+
+<span class="topics fontBold fontSize18">Input spinbox "float"</span> 
+
+<pre class="flex fontSize16 fontRegular tab2">
+<code class="codeFunc">
+def inputFloatSpinbox(
+    frame:          ctk.CTkFrame, 
+    row:            int = 0, 
+    column:         int = 0,
+    text:           str = 'Label',  
+    minimum:        int = 0, 
+    maximum:        int = 10, 
+    width:          int = 5,
+    textColor:      str = 'black',
+    background:     str = 'white',
+    defaultValue: float = 0.0,
+    position:       str = 'left'  # 'left', 'right' or 'center'
+):
+- Widget duplo, ocupa duas colunas, widget formado por <mark>Label</mark> + <mark>Spinbox</mark>.
+
+<strong>* Exemplo:</strong>
+
+self.frame = createFrame(self.root, row = 0, column = 0, padx = 5, pady = 5, background = '#8a8a8a')
+
+inputLabel(self.frame, row = 0, column = 0, text = 'Example floatSpinbox input', textColor = 'white', background ='#575757')
+
+inputFloatSpinbox(self.frame, row = 1, column = 0, text = 'Spin float 1', minimum = -10, maximum = 2000, width = 5, defaultValue = 10.0, position = 'right')
+inputFloatSpinbox(self.frame, row = 2, column = 0, text = 'Spin float 2', minimum = -10, maximum = 2000, width = 7, defaultValue = 1000.0, position = 'center')
+inputFloatSpinbox(self.frame, row = 3, column = 0, text = 'Spin float 3', minimum = -10, maximum = 200000, width = 9, defaultValue = 100000.0, position = 'left')
+</code>  
+<img src="../img/floatSpin.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 200px; width: 300px;"/>
+</pre>
+
+<span class="topics fontBold fontSize18">Input option menu</span> 
+
+<pre class="flex fontSize16 fontRegular tab2">
+<code class="codeFunc">
+def inputOptions(
+    frame:        ctk.CTkFrame,
+    row:          int = 0, 
+    column:       int = 0, 
+    text:         int = 'Label', 
+    values:      list = [],
+    defaultValue: str = '',
+    width:        int = 70 ,
+    position:     str = 'left'   # 'left', 'right' or 'center'
+):
+- Widget duplo, ocupa duas colunas, widget formado por <mark>Label</mark> + <mark>OptionMenu</mark>.
+
+<strong>* Exemplo:</strong>
+
+self.frame = createFrame(self.root, row = 0, column = 0, padx = 5, pady = 5, background = '#8a8a8a')
+
+inputLabel(self.frame, row = 0, column = 1, text = 'Example option menu input', textColor = 'white', background ='#575757')
+
+inputOptions(self.frame, row = 1, column = 0, text = 'Options', values = ['value1', 'value2', 'value3'], defaultValue = 'value1', position = 'left')
+inputOptions(self.frame, row = 2, column = 0, text = 'Options', values = ['value1', 'value2', 'value3'], defaultValue = 'value2', position = 'center')
+inputOptions(self.frame, row = 3, column = 0, text = 'Options', values = ['value1', 'value2', 'value3'], defaultValue = 'value3', position = 'right')
+</code>  
+<img src="../img/optionMenu.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 200px; width: 300px;"/>
+</pre>
+
+<span class="topics fontBold fontSize18">Input slider</span> 
+
+<pre class="flex fontSize16 fontRegular tab2">
+<code class="codeFunc">
+def inputSlider(
+    frame:          ctk.CTkFrame, 
+    row:            int = 0, 
+    column:         int = 0, 
+    startValue:     int = 0,
+    endValue:       int = 1,
+    defaultValue: float = 0.0,
+    buttonColor:    str = '#2d92cc',
+    background:     str = '#444444',
+    position:       str = 'left',  # 'left', 'right', 'center' or 'full'
+    text            str = ''       # 'Title'
+):
+- Widget duplo, ocupa duas colunas, widget formado por <mark>Label</mark> + <mark>Slider</mark>.
+
+<strong>* Exemplo:</strong>
+
+self.frame = createFrame(self.root, row = 0, column = 0, padx = 5, pady = 5, background = '#8a8a8a')
+
+inputLabel(self.frame, row = 0, column = 1, text = 'Example slider input', textColor = 'white', background ='#575757')
+
+inputSlider(self.frame, row = 1, column = 0, startValue = 0, endValue = 1, defaultValue = '0.30', position = 'left')
+inputSlider(self.frame, row = 2, column = 0, startValue = 1, endValue = 10, defaultValue = '5.50', position = 'center')
+inputSlider(self.frame, row = 3, column = 0, startValue = 10, endValue = 100, defaultValue = '50.10', position = 'right')
+inputSlider(self.frame, row = 4, column = 0, startValue = 0, endValue = 1, defaultValue = '0.1', position = 'full')
+</code>  
+<img src="../img/slider.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 200px; width: 300px;"/>
+</pre>
+
+<span class="topics fontBold fontSize18">Input color</span> 
+
+<pre class="flex fontSize16 fontRegular tab2">
+<code class="codeFunc">
+def inputColor(
+    frame:        ctk.CTkFrame,
+    row:          int = 0,
+    column:       int = 0,
+    text:         str = 'Label',
+    color:        str = '#a70000',
+    defaultColor: str = '#a70000',
+    position:     str = 'left'   # 'left' or 'right'
+):
+- Widget duplo, ocupa duas colunas, widget formado por <mark>Label</mark> + <mark>button color</mark>.
+
+<strong>* Exemplo:</strong>
+
+self.frame = createFrame(self.root, row = 0, column = 0, padx = 5, pady = 5, background = '#8a8a8a')
+
+inputLabel(self.frame, row = 0, column = 1, text = 'Example color input', textColor = 'white', background ='#575757')
+
+inputColor(self.frame, row = 1, column = 0, text = 'color1', color = 'aqua', defaultColor = 'white', position = 'left')
+inputColor(self.frame, row = 2, column = 0, text = 'color2', color = 'green', defaultColor = 'white', position = 'right')
+inputColor(self.frame, row = 3, column = 0, text = 'color3', color = 'yellow', defaultColor = 'white', position = 'left')
+inputColor(self.frame, row = 4, column = 0, text = 'color4', color = 'red', defaultColor = 'white', position = 'right')
+</code>  
+<img src="../img/color.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 200px; width: 300px;"/>
+</pre>
+
+<span class="topics fontBold fontSize18">Input calendar "Date and time"</span> 
+
+<pre class="flex fontSize16 fontRegular tab2">
+<code class="codeFunc">
+def inputDatetime(
+    frame:    ctk.CTkFrame,
+    row:      int = 0,
+    column:   int = 0,
+    text:     str = 'date',
+    dateTime: str = '2024-01-01 00:00'
+) -> str:
+- Widget duplo, ocupa duas colunas, widget formado por <mark>Label</mark> + <mark>DateTime</mark>.
+
+<strong>* Exemplo:</strong>
+
+self.frame = createFrame(self.root, row = 0, column = 0, padx = 5, pady = 5, background = '#8a8a8a')
+
+inputLabel(self.frame, row = 0, column = 1, text = 'Example DateTime input', textColor = 'white', background ='#575757')
+
+inputDatetime(self.frame, row = 1, column = 0, text = 'Date time', dateTime = '2024-01-01 10:00')
+</code>  
+<img src="../img/datetime.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 200px; width: 300px;"/>
+</pre>
+
+<span class="topics fontBold fontSize18">Separadores "Horizontal e Vertical"</span> 
+
+<pre class="flex fontSize16 fontRegular tab2">
+<code class="codeFunc">
+def createHSeparator(
+    frame:   ctk.CTkFrame,
+    row:     int = 0,
+    column:  int = 0,
+    colspan: int = 2
+):
+- Cria um separador na <mark>Horizontal</mark>, utilizar o parâmetro <mark>colspan</mark> para ajustar o tamanho desejado.
+
+def createVSeparator(
+    frame:   ctk.CTkFrame,
+    row:     int = 0,
+    column:  int = 0,
+    rowspan: int = 5
+):
+- Cria um separador na <mark>Vertical</mark>, utilizar o parâmetro <mark>rowspan</mark> para ajustar o tamanho desejado.
+
+<strong>* Exemplo:</strong>
+
+self.frame = createFrame(self.root, row = 0, column = 0, padx = 5, pady = 5, background = '#8a8a8a')
+
+inputLabel(self.frame, row = 0, column = 0, text = 'Separator 1', textColor = 'white', background ='#575757')
+createHSeparator(self.frame, row = 1, column = 0, colspan = 8)
+
+inputLabel(self.frame, row = 2, column = 0, text = 'Separator 1', textColor = 'white', background ='#575757')
+createHSeparator(self.frame, row = 3, column = 0, colspan = 8)
+
+inputLabel(self.frame, row = 4, column = 0, text = 'Separator 1', textColor = 'white', background ='#575757')
+createVSeparator(self.frame, row = 0, column = 0, rowspan = 5)
+
+
+inputLabel(self.frame, row = 0, column = 4, text = 'Separator 2', textColor = 'white', background ='#575757')
+inputLabel(self.frame, row = 2, column = 4, text = 'Separator 2', textColor = 'white', background ='#575757')
+inputLabel(self.frame, row = 4, column = 4, text = 'Separator 2', textColor = 'white', background ='#575757')
+createVSeparator(self.frame, row = 0, column = 1, rowspan = 5)
+
+inputLabel(self.frame, row = 0, column = 7, text = 'Separator 3', textColor = 'white', background ='#575757')
+inputLabel(self.frame, row = 2, column = 7, text = 'Separator 3', textColor = 'white', background ='#575757')
+inputLabel(self.frame, row = 4, column = 7, text = 'Separator 3', textColor = 'white', background ='#575757')
+</code> 
+<img src="../img/separators.png" class="zoomImagem centerContent responsiveImage" style="position: relative; height: 200px; width: 300px;"/>
+</pre>
+
+
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>  

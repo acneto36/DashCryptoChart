@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Criar indicador</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../../css/styles.css">
+
+</head>
+<body>
+    
+
+<div class="container">
+
+    <header class="centerContent">
+        <nav>
+            <button id = "homeBtn"    onclick = "window.location.href = '../../Home/en/index.html'">Home</button>
+            <button id = "createBtn"  onclick = "window.location.href = '../../CreateScreen/en/index.html'">Create indicator</button>
+            <button id = "importsBtn" onclick = "window.location.href = '../../Imports/en/index.html'">Imports</button>
+            <button id = "plotsBtn"   onclick = "window.location.href = '../../Plots/en/index.html'">Plots</button>
+            <button id = "inputsBtn"  onclick = "window.location.href = '../../Inputs/en/index.html'">Inputs</button>
+        </nav>
+    </header>
+
+<span class="title fontBold fontSize26"><i>Presentation of the 'Create indicator' screen.</i></span>
+
+<pre class="flex fontRegular fontSize18">
+
+<img src="../img/initial.png" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 700px; height: 400px;"/>
+
+*  1 - Creates a folder with the name of the indicator and automatically generates a base file for the indicator.  
+*  2 - Deletes the indicator folder.  
+*  3 - Deletes files related to input and .txt files.  
+*  4 - Edits files according to the selected tab, sending the content to the code editor <mark>15</mark>.  
+*  5 - Exports the indicator folder, creating a backup so you can share the indicator.  
+*  6 - New function, it will be saved in the <mark>Functions</mark> directory.  
+*  7 - Shows where you are editing the file from.  
+*  8 - Saves changes in the folder visible in field <mark>7</mark>.  
+*  9 - Base code to create an input file.  
+<strong>
+    * Note: Select the <mark>Indicator</mark> tab and go to field <mark>4</mark> to select the indicator file to obtain the folder path, then switch to the <mark>Input</mark> tab and use the button to import the example code.
+</strong>
+* 10 - Clears the text in the code editor <mark>15</mark> and also clears field <mark>7</mark>.  
+* 11 - Imports the folder with the indicator, it will be saved directly in the <mark>Indicators</mark> directory of the project.  
+* 12 - Clears the selected fields.  
+* 13 - Dynamic search field, typing a word will show the total found and highlight it in the code.  
+* 14 - Each tab serves to save the file with its correct name following a necessary pattern and also when using button <mark>10</mark> to import the correct example code.  
+* 15 - Code editor with syntax highlighting.  
+* 16 - Symbol selection to use with the log.  
+* 17 - Opens the log screen.  
+* 18 - Saves the log inserted in the indicator.  
+* 19 - With the Input tab selected and content in field <mark>15</mark>, opens the input screen to view the changes.  
+
+<span class="section fontBold fontSize22"><i>Using the indicator creation screen</i></span>
+<span class="fontRegular fontSize20">
+* <span class="fontBold" style="color:rgb(5, 126, 196)">Internal functioning.</span>
+
+    ** When creating the indicator or input, it will be renamed with the prefix <mark>_ind__</mark> or <mark>_inp__</mark>.
+
+    ** Never use these prefixes at the beginning of a function name; function names are free and you can use the prefix <mark>func</mark> to differentiate the files when manipulating them.
+
+    ** When creating code with an external editor, the main class name of the indicator should start with the prefix <mark>Ind</mark>, and in the case of a class for input, it should start with the prefix <mark>Inp</mark>.
+    
+    * <strong>Note: You can rename the class name as long as you maintain the <mark>Ind</mark> or <mark>Inp</mark> prefix.  
+        However, if you rename the indicator folder or file, you need to keep a naming pattern as shown in the image.</strong>
+               
+<img src="../img/model.png" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 350px; height: 100px;"/>
+
+* <span style="color:red">Tip:</span> <span style="color:rgb(1, 168, 51)">Create the files using the project's standard editor, and then you can use your preferred editor by exporting the relevant folder.</span> 
+
+<span class="topics fontBold fontSize18">1st Creating an indicator</span> 
+
+<img src="../img/newIndicator.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 750px; height: 400px;"/>
+
+* <strong>Note: Pay attention to the confirmation message with the name of the indicator; however, it has been internally renamed starting with <mark>_ind__</mark>.  
+    This is necessary to automatically find the newly created indicators.  
+    If you create a file with an external editor, maintain the naming pattern of the indicator starting with <mark>_ind__YourIndicator</mark> or <mark>_inp__YourInput</mark>.</strong>
+
+<span class="topics fontBold fontSize18">2nd Creating an input</span> 
+
+<img src="../img/createInput.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 750px; height: 400px;"/>
+
+<span class="topics fontBold fontSize18">3rd Editing indicator, input, or function</span> 
+
+<strong>* Note: Choose a tab, the <mark>Edit</mark> field will only display the files related to the selected tab.</strong>
+
+<img src="../img/edit.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 700px; height: 400px;"/>
+
+<span class="topics fontBold fontSize18">4th Deleting the indicator folder or file</span> 
+ 
+<span class="fontBold fontSize20" style="color:rgb(97, 3, 141)">Indicator:</span>
+
+<img src="../img/deleteInd.png" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 650px; height: 350px;"/>
+
+<span class="fontBold fontSize20" style="color:rgb(97, 3, 141)">File:</span>
+    * <strong>Note: Deletes both .py files and .txt configuration files.  
+        - Files <mark>__ind__</mark> are not visible for deletion; you need to use the <mark>Delete Indicator</mark> button.
+    </strong>
+
+<img src="../img/deleteFile.png" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 650px; height: 350px;"/>
+
+<span class="topics fontBold fontSize18">5th Creating a function</span>
+<img src="../img/function.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 650px; height: 400px;"/>
+
+<span class="topics fontBold fontSize18">6th Exporting the folder</span>
+<img src="../img/export.png" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 650px; height: 300px;"/>
+* <strong>Note: Exports the indicator folder and the folder that contains functions.  
+    - When importing, only use the indicator folders because they will be saved directly in the <mark>Indicators</mark> directory of the project.
+</strong>
+
+<span class="topics fontBold fontSize18">7º CLEARS</span>
+<img src="../img/clears.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 650px; height: 400px;"/>
+
+<span class="topics fontBold fontSize18">8º Busca de texto</span>
+<img src="../img/search.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 650px; height: 400px;"/>
+
+<span class="topics fontBold fontSize18">9º LOGS</span>
+<img src="../img/log.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 700px; height: 300px;"/>
+
+
+</pre>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>  

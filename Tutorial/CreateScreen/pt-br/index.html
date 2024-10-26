@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Criar indicador</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../../css/styles.css">
+
+</head>
+<body>
+    
+
+<div class="container">
+
+    <header class="centerContent">
+        <nav>
+            <button id = "homeBtn"    onclick = "window.location.href = '../../InitialScreen/pt-br/index.html'">Home</button>
+            <button id = "createBtn"  onclick = "window.location.href = '../../CreateScreen/pt-br/index.html'">Criar indicador</button>
+            <button id = "importsBtn" onclick = "window.location.href = '../../Imports/pt-br/index.html'">Imports</button>
+            <button id = "plotsBtn"   onclick = "window.location.href = '../../Plots/pt-br/index.html'">Plots</button>
+            <button id = "inputsBtn"  onclick = "window.location.href = '../../Inputs/pt-br/index.html'">Inputs</button>
+        </nav>
+    </header>
+
+<span class="title fontBold fontSize26"><i>Apresentação da tela 'Criar indicador'</i></span>
+
+<pre class="flex fontRegular fontSize18">
+
+<img src="../img/initial.png" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 700px; height: 400px;"/>
+
+*  1 - Cria a pasta com o nome do indicador e vai ser criado automático um arquivo base para o indicador.
+*  2 - Deleta a pasta do indicador.
+*  3 - Deleta arquivos referentes a input e arquivos .txt.
+*  4 - Edita arquivos conforme a aba selecionada, envia o conteúdo para o editor de código <mark>15</mark>.
+*  5 - Exporta a pasta do indicador fazendo um backup, assim pode compartilhar o indicador.
+*  6 - Nova função, será salvo no diretório 'Functions'.
+*  7 - Visualiza de onde esta editando o arquivo.
+*  8 - Salva as alterações na pasta visível no campo <mark>7</mark>.
+*  9 - Código base para criar arquivo de input.
+<strong>
+    * Obs: Selecionar a aba <mark>Indicator</mark> e ir no campo <mark>4</mark> selecionando o arquivo do indicador para obter o caminho da pasta e então alterar para a aba <mark>Input</mark> e utilizar o botão para importar o exemplo de código.
+</strong>
+* 10 - Limpar texto no editor de código <mark>15</mark> e também limpa o campo <mark>7</mark>.
+* 11 - Importar pasta com indicador, será salvo direto no diretório <mark>Indicators</mark> do projeto.
+* 12 - Limpa os campos selecionados.
+* 13 - Campo de pesquisa dinâmico, ao digitar alguma palavra aparecerá o total encontrado e destacará no código.
+* 14 - Cada aba serve para salvar o arquivo com o seu nome correto seguindo um padrão necessário e também ao utilizar o botão <mark>10</mark> importar o código de exemplo correto.
+* 15 - Editor de código com coloração de sintaxe.
+* 16 - Seleção de símbolo para utilizar com o log.
+* 17 - Abre a tela de log.
+* 18 - Salva o log inserido no indicador.
+* 19 - Com a aba <mark>Input</mark> selecionada e conteúdo no campo <mark>15</mark>, abre a tela de input para visualizar as alterações. 
+
+<span class="section fontBold fontSize22"><i>Utilizando a tela de criação de indicador</i></span>
+<span class="fontRegular fontSize20">
+* <span class="fontBold" style="color:rgb(5, 126, 196)">Funcionamento interno.</span>
+
+    ** Ao criar o indicador ou input, ele será renomeado com o prefixo <mark>_ind__</mark> ou <mark>_inp__</mark>
+
+    ** Nunca utilize no começo do nome de uma função esses prefixos, os nomes de funções estão livres e pode utilizar o prefixo <mark>func</mark> para diferenciar os arquivos na hora de manipular eles.
+
+    ** Ao criar código com editor externo, nome de classe principal do indicador deve iniciar com o prefixo <mark>Ind</mark> e no caso de classe para input deve iniciar com o prefixo <mark>Inp</mark>.
+
+    * <strong>Obs: Pode renomear o nome da classe desde que mantenha o prefixo <mark>Ind</mark> ou <mark>Inp</mark>.
+        Mas se renomear a pasta do indicador ou o arquivo, precisa manter um padrão de nome como na imagem.</strong>
+               
+<img src="../img/model.png" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 350px; height: 100px;"/>
+
+* <span style="color:red">Dica:</span> <span style="color:rgb(1, 168, 51)">Crie os arquivos pelo editor padrão do projeto e depois pode utilizar seu editor preferido exportando a pasta em questão.</span> 
+
+<span class="topics fontBold fontSize18">1º Criando um indicador</span> 
+
+<img src="../img/newIndicator.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 750px; height: 400px;"/>
+
+* <strong>Obs: Observe a mensagem de confirmação com o nome do indicador, porém ele internamente foi renomeado com o começo <mark>_ind__</mark>.
+    Isso é necessário para poder encontrar de forma automática os novos indicadores criados.
+    Caso crie um arquivo com algum editor externo, mantenha o padrão do nome do indicador com o começo <mark>_ind__YourIndicator</mark> ou <mark>_inp__YourInput</mark>.</strong>
+
+<span class="topics fontBold fontSize18">2º Criando um input</span> 
+
+<img src="../img/createInput.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 750px; height: 400px;"/>
+
+<span class="topics fontBold fontSize18">3º Editando indicador, input ou função</span> 
+
+<strong>* Obs: Escolha uma aba, o campo <mark>Edit</mark> vai mostrar apenas os arquivos referêntes a aba selecionada.</strong>
+
+<img src="../img/edit.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 700px; height: 400px;"/>
+
+<span class="topics fontBold fontSize18">4º Deletando pasta do indicador ou arquivo</span> 
+ 
+<span class="fontBold fontSize20" style="color:rgb(97, 3, 141)">Indicator:</span>
+
+<img src="../img/deleteInd.png" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 650px; height: 350px;"/>
+
+<span class="fontBold fontSize20" style="color:rgb(97, 3, 141)">File:</span>
+    * <strong>Obs: Deleta tanto arquivo .py quanto arquivo de configuração .txt.
+        - Arquivos <mark>__ind__</mark> não estão visíveis para deletar, precisa utilizar o botão <mark>Delete Indicator</mark>
+    </strong>
+
+<img src="../img/deleteFile.png" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 650px; height: 350px;"/>
+
+<span class="topics fontBold fontSize18">5º Criando uma função</span>
+<img src="../img/function.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 650px; height: 400px;"/>
+
+<span class="topics fontBold fontSize18">6º Exportando pasta</span>
+<img src="../img/export.png" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 650px; height: 300px;"/>
+* <strong>Obs: Exporta pasta de indicador e pasta que contém funções.
+     - Ao importar utilizar apenas as pastas de indicadores porque serão salva direto no diretório <mark>Indicators</mark> do projeto.
+</strong>
+
+<span class="topics fontBold fontSize18">7º CLEARS</span>
+<img src="../img/clears.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 650px; height: 400px;"/>
+
+<span class="topics fontBold fontSize18">8º Busca de texto</span>
+<img src="../img/search.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 650px; height: 400px;"/>
+
+<span class="topics fontBold fontSize18">9º LOGS</span>
+<img src="../img/log.gif" class="zoomImagem centerContent responsiveImage" style="position: relative; width: 700px; height: 300px;"/>
+
+
+</pre>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>  

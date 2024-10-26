@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plots</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../../css/styles.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <header class="centerContent">
+        <nav>
+            <button id = "homeBtn"    onclick = "window.location.href = '../../Home/en/index.html'">Home</button>
+            <button id = "createBtn"  onclick = "window.location.href = '../../CreateScreen/en/index.html'">Criar indicador</button>
+            <button id = "importsBtn" onclick = "window.location.href = '../../Imports/en/index.html'">Imports</button>
+            <button id = "plotsBtn"   onclick = "window.location.href = '../../Plots/en/index.html'">Plots</button>
+            <button id = "inputsBtn"  onclick = "window.location.href = '../../Inputs/en/index.html'">Inputs</button>
+        </nav>
+    </header>
+
+<span class="title fontBold fontSize26 "><i>Presentation of plot types</i></span>
+
+<pre class="preBase fontRegular fontSize16 preWarp"> <!-- Moldura de fundo -->
+<strong class="flex fontSize18 tab1">Note: The variables <mark>fig</mark> and <mark>df</mark> are already included in the creation of the indicator, so it is only necessary to pass them as parameters to the plot functions.</strong>
+<strong class="flex fontSize18 tab1">All plots except <mark>plotHistogram</mark> contain a parameter to plot within the indicator in a new line or as histograms <mark>isHistogram</mark>.</strong>
+
+<code class="code">
+    »»»»»»»»»»»»»»» IMPORTS INDICATOR «««««««««««««««
+
+import os
+import sys
+import traceback
+from   CreateIndicator.Plots.mWriteReadInput import * 
+from   CreateIndicator.Extra.collection      import * 
+from   CreateIndicator.Extra.mConsole        import console 
+from   CreateIndicator.Plots.mPlots          import * 
+from   CreateIndicator.Extra.libs            import * 
+from   DataFrames.mFormatNumber              import * 
+from   DataFrames.mDataSeries                import * 
+from   SystemFiles.mWriteLog                 import * 
+
+    »»»»»»»»»»»»»»»»»»»»»»» «««««««««««««««««««««««««
+</code>  
+
+<span class="section fontBold fontSize20">COLOR CANDLE</span> 
+<code class="code">
+plotCandle(
+    df:          pd.DataFrame, 
+    listIndex:   list, 
+    color:        str = 'gray',
+    isHistogram: bool = False
+)
+</code>
+<pre class="flex tab1">
+<code style="background-color: #EBEBEB; font-size: 18px;">
+* Example of use:
+
+# Complete index list coloring.
+    plotCandle(fig, df, lstIndex, 'white')
+
+# Coloring in the selected candle list.
+    plotCandle(fig, df, [self.startIndex, self.endIndex], 'red')
+</code>
+</pre>
+
+<span><i class="indicator fontBold fontSize22">INDICATOR</i></span>
+
+<code class="code">
+
+class IndColorcandle: # The name must start with 'Ind'
+    def __init__(self, fig, df, symbol):  # Do not remove parameters
+
+        try:
+
+            idx    = indexes(df)
+            lstIdx = [idx[-5], idx[-10], idx[-20]]
+
+            plotCandle(fig, df, idx, 'white')
+            plotCandle(fig, df, lstIdx, 'red')
+
+        except Exception as e:
+
+            name      = f'{self.__class__.__name__[3:]}'
+            errorMsg  = ''.join(traceback.format_exception_only(type(e), e)).strip()
+            errorLine = traceback.extract_tb(e.__traceback__)[-1].lineno
+            
+            print(f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            F_writeLog(pathLog, f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            pass
+</code>
+
+<span><i class="result fontBold fontSize22">RESULT</i></span>
+
+<img src="../img/colorcandle.png" class="centerContent" style="position: relative; height: 300px; width: 420px;"/>
+                            <!-- PLOT LINES -->
+<span class="section fontBold fontSize20">PLOT LINES</span> 
+
+<code class="code">
+plotLines(
+    fig,
+    listDates:    list,
+    listPrices:   list, 
+    colorRGB:     str = 'gray',
+    typeLine:     str = 'solid', 
+    widthLine:    int = 1,
+    isHistogram: bool = False
+)
+</code>
+
+<strong class="flex fontSize18 tab1">Note: Type of line that can be used for moving average using a list of averages</strong>
+
+<span><i class="indicator fontBold fontSize22">INDICATOR</i></span>
+
+<code class="code">  
+class IndPlotlines: # The name must start with 'Ind'
+    def __init__(self, fig, df, symbol):  # Do not remove parameters
+
+        try:
+
+            hg   = highs(df)
+            lw   = lows(df)
+            date = dates(df)
+
+            plotLines(
+                fig, [date[-50], date[-10]], [hg[-50], lw[-10]], 'yellow', 
+                widthLine = 3 
+            )
+
+        except Exception as e:
+
+            name      = f'{self.__class__.__name__[3:]}'
+            errorMsg  = ''.join(traceback.format_exception_only(type(e), e)).strip()
+            errorLine = traceback.extract_tb(e.__traceback__)[-1].lineno
+            
+            print(f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            F_writeLog(pathLog, f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            pass
+</code>
+
+<span><i class="result fontBold fontSize22">RESULT</i></span>
+
+<img src="../img/lines.png" class="centerContent" style="position: relative; height: 300px; width: 420px;"/> 
+                    <!-- PLOT LINECOLOR -->
+<span class="section fontBold fontSize20">PLOT LINECOLOR</span> 
+
+<code class="code">
+plotLineColor(
+    fig ,
+    listDates:   list, 
+    listPrices:  list,
+    listColor:   list,
+    widthLine:    int = 1,
+    isHistogram: bool = False
+)
+</code>
+
+<strong class="flex fontSize18 tab1">Note: This plot does not allow changing the line type, default: DOT</strong>
+
+<span><i class="indicator fontBold fontSize22">INDICATOR</i></span>
+
+<code class="code">
+class IndPlotlinecolor: # The name must start with 'Ind'
+    def __init__(self, fig, df, symbol):  # Do not remove parameters
+
+        try:
+
+            cl   = closes(df)
+            date = dates(df)
+
+            periods    = 50
+            listColors = []
+            listDates  = []
+            lstMa      = MA(cl, periods, 'sma')
+
+            for i in range(periods-1, len(cl)):
+			
+                listDates.append(date[i])
+                listColors.append(
+                    'white' if lstMa[i-periods] > lstMa[i-periods-1] else 'yellow' 
+                )
+			
+            plotLineColor(
+                fig, listDates, lstMa, listColors, widthLine = 3
+            )
+
+
+        except Exception as e:
+
+            name      = f'{self.__class__.__name__[3:]}'
+            errorMsg  = ''.join(traceback.format_exception_only(type(e), e)).strip()
+            errorLine = traceback.extract_tb(e.__traceback__)[-1].lineno
+            
+            print(f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            F_writeLog(pathLog, f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            pass
+</code>
+
+<span><i class="result fontBold fontSize22">RESULT</i></span>
+
+<img src="../img/linecolor.png" class="centerContent" style="position: relative; height: 300px; width: 420px;"/>
+                          <!-- PLOT FILL -->
+<span class="section fontBold fontSize20">PLOT FILL</span> 
+
+<code class="code">
+plotFill(
+    fig,
+    listDate:    list,
+    listPrice1:  list,
+    listPrice2:  list,
+    rgbaColor:    str = 'rgba(255, 0, 0, 0.082)',
+    isHistogram: bool = False 
+)
+</code>
+
+<span><i class="indicator fontBold fontSize22">INDICATOR</i></span>
+
+<code class="code">
+class IndPlotfill: # The name must start with 'Ind'
+    def __init__(self, fig, df, symbol):  # Do not remove parameters
+
+        try:
+            cl   = closes(df)
+            date = dates(df)
+
+            periods   = 50
+            listDates = []
+            lstMa     = MA(cl, periods, 'sma')
+
+            for i in range(periods-1, len(cl)):
+                listDates.append(date[i])
+
+
+            plotLines(
+                fig, listDates, lstMa, 'aqua', typeLine = 'solid', widthLine = 2 
+            ) 
+
+            listPricesUp = [price * 1.06 for price in lstMa]
+            listPricesDn = [price * 0.94 for price in lstMa]
+
+            plotFill(
+                fig, listDates, lstMa, listPricesUp, 'rgba(15, 209, 199, 0.425)'
+            )
+            plotFill(
+                fig, listDates, lstMa, listPricesDn, 'rgba(209, 86, 15, 0.5)'
+            )
+
+        except Exception as e:
+
+            name      = f'{self.__class__.__name__[3:]}'
+            errorMsg  = ''.join(traceback.format_exception_only(type(e), e)).strip()
+            errorLine = traceback.extract_tb(e.__traceback__)[-1].lineno
+            
+            print(f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            F_writeLog(pathLog, f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            pass
+</code>
+
+<span><i class="result fontBold fontSize22">RESULT</i></span>
+
+<img src="../img/fill.png" class="centerContent" style="position: relative; height: 300px; width: 420px;"/>
+                            <!-- PLOT HORIZONTAL E VERTICAL LINE -->
+<span class="section fontBold fontSize20">PLOT HORIZONTAL LINE | VERTICAL LINE</span> 
+
+<code class="code">
+plotHorizontalLine(
+    fig,
+    startDate:    pd.Timestamp, 
+    endDate:      pd.Timestamp,
+    price:        float,
+    colorRGB:     str = 'white',
+    typeLine:     str = 'solid',
+    widthLine:    int = 1,
+    isHistogram: bool = False
+)
+</code>
+
+<code class="code">
+plotVerticalLine(
+    fig,
+    date:         pd.Timestamp, 
+    startPrice:   float,
+    endPrice:     float,
+    colorRGB      str = 'white',
+    typeLine      str = 'solid',
+    widthLine     int = 1,
+    isHistogram: bool = False
+)
+</code>
+
+<span><i class="indicator fontBold fontSize22">INDICATOR</i></span>
+
+<code class="code">
+class IndHorizontalVertical: # The name must start with 'Ind'
+    def __init__(self, fig, df, symbol):  # Do not remove parameters
+
+        try:
+
+            hg   = highs(df)
+            lw   = lows(df)
+            cl   = closes(df)
+            date = dates(df)
+
+            plotHorizontalLine( 
+                fig, date[-50], date[-1], cl[-10], 'yellow', widthLine = 4 
+            ) 
+            plotVerticalLine( 
+                fig, date[-25], lw[-100], hg[-10], '#0a91df', widthLine = 4 
+            )
+
+        except Exception as e:
+
+            name      = f'{self.__class__.__name__[3:]}'
+            errorMsg  = ''.join(traceback.format_exception_only(type(e), e)).strip()
+            errorLine = traceback.extract_tb(e.__traceback__)[-1].lineno
+            
+            print(f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            F_writeLog(pathLog, f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            pass
+</code>
+
+<span><i class="result fontBold fontSize22">RESULT</i></span>
+
+<img src="../img/verthoriz.png" class="centerContent" style="position: relative; height: 300px; width: 420px;"/>
+                                <!-- PLOT HISTOGRAM -->
+<span class="section fontBold fontSize20">PLOT HISTOGRAM</span> 
+
+<code class="code">
+plotHistogram(
+    fig,
+    listDates:  list, 
+    listValues: list,
+    listColor:  list
+)
+</code>
+                            
+<span><i class="indicator fontBold fontSize22">INDICATOR</i></span>
+
+<code class="code">
+SEPARATE_WINDOW = True # If it's a histogram in a separate window, change to True 
+    
+class IndHistogram: # The name must start with 'Ind'
+    def __init__(self, fig, df, symbol):  # Do not remove parameters
+
+        try:
+
+            cl    = closes(df)
+            vl    = volumes(df)
+            date  = dates(df)
+            sizes = size(df)
+            start = sizes-100
+
+            # Pre-allocation of values in the lists
+            lstWave   = [0] * sizes
+            lstColors = ['white'] * sizes
+
+            for i in range(start-1, sizes):
+
+                dir          = 1 if cl[i] >= cl[i-1] else -1
+                lstWave[i]   = vl[i] if dir == 1 else -vl[i]
+                lstColors[i] = 'aqua' if dir == 1 else 'orange'
+
+                plotHistogram(fig, date, lstWave, lstColors)
+
+
+        except Exception as e:
+
+            name      = f'{self.__class__.__name__[3:]}'
+            errorMsg  = ''.join(traceback.format_exception_only(type(e), e)).strip()
+            errorLine = traceback.extract_tb(e.__traceback__)[-1].lineno
+            
+            print(f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            F_writeLog(pathLog, f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            pass
+</code>
+
+<span><i class="result fontBold fontSize22">RESULT</i></span>
+
+<img src="../img/histo.png" class="centerContent" style="position: relative; height: 300px; width: 420px;"/>
+                                <!-- PLOT LABEL -->
+<span class="section fontBold fontSize20">PLOT LABEL</span> 
+
+<code class="code">
+plotLabel(
+    fig,
+    dateAnchor:   pd.Timestamp,
+    price:        float,
+    text:           str,
+    textAlign       str = 'center',  # 'left', 'center' and 'right'
+    textColor       str = 'white',
+    fontSize        int = 13,
+    showArrow      bool = False,
+    arrowPosition   str = 'top',     # 'top', 'bottom', 'left' and 'right' 
+    arrowHeight     str = 10,
+    arrowWidth      str = 2,
+    arrowType       str = 0,         # 0 to 7
+    rgbaBackground  str = 'rgba(70, 70, 70, 0.663)',
+    rgbaBorderColor str = 'rgba(80, 192, 28, 0.659)',
+    isHistogram:   bool = False
+)
+</code>
+
+<span><i class="indicator fontBold fontSize22">INDICATOR</i></span>
+
+<code class="code">
+class IndPlotlabel: # The name must start with 'Ind'
+    def __init__(self, fig, df, symbol):  # Do not remove parameters
+
+        try:
+
+            cl    = closes(df)
+            date  = dates(df)
+            dateX = shiftDateHours(date[-1], 20)
+
+            plotLabel(
+                fig, dateX, cl[-1], f'{cl[-1]} - Last price', 'center', '#f1f1f1', 
+                13, True, 'left', 30, 2, 0, "rgba(145, 142, 142, 0.308)", 
+                "rgba(95, 243, 9, 0.637)"
+            )
+
+        except Exception as e:
+
+            name      = f'{self.__class__.__name__[3:]}'
+            errorMsg  = ''.join(traceback.format_exception_only(type(e), e)).strip()
+            errorLine = traceback.extract_tb(e.__traceback__)[-1].lineno
+            
+            print(f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            F_writeLog(pathLog, f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            pass
+</code>
+
+<span><i class="result fontBold fontSize22">RESULT</i></span>
+
+<img src="../img/label.png" class="centerContent" style="position: relative; height: 300px; width: 420px;"/>
+                             <!-- PLOT TEXT -->
+<span class="section fontBold fontSize20">PLOT TEXT</span> 
+
+<code class="code">
+plotText(
+    fig,
+    dateAnchor: pd.Timestamp,
+    price:      float,
+    text:         str,
+    textAlign:    str = 'center', # 'left', 'center' and 'right', 
+    color:        str = 'whrite',
+    fontSize:     int = 13,
+    isHistogram: bool = False
+)
+</code>
+
+<span><i class="indicator fontBold fontSize22">INDICATOR</i></span>
+
+<code class="code">
+class IndPlottext: # The name must start with 'Ind'
+    def __init__(self, fig, df, symbol):  # Do not remove parameters
+
+        try:
+
+            cl   = closes(df)
+            date = dates(df)
+
+            plotText(
+                fig, date[-1], cl[-1], f'Last', 'right', color = '#f1f1f1', 
+                fontSize = 15 
+            )
+
+
+        except Exception as e:
+
+            name      = f'{self.__class__.__name__[3:]}'
+            errorMsg  = ''.join(traceback.format_exception_only(type(e), e)).strip()
+            errorLine = traceback.extract_tb(e.__traceback__)[-1].lineno
+            
+            print(f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            F_writeLog(pathLog, f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            pass
+</code>
+
+<span><i class="result fontBold fontSize22">RESULT</i></span>
+
+<img src="../img/text.png" class="centerContent" style="position: relative; height: 300px; width: 420px;"/>
+                               <!-- PLOT FIGURE -->
+<span class="section fontBold fontSize20">PLOT FIGURE</span> 
+
+<code class="code">
+plotFigure(
+    fig,
+    dateAnchor: pd.Timestamp,
+    price:      float,
+    typeFigure:   int = 1,        # 1 style '▲' and 2 style '△'  
+    direction:    str = 'top',    # 'top', 'bottom', 'left' and 'right' 
+    figureAlign:  str = 'center', # 'left', 'center' and 'right'
+    color:        str = 'whrite',
+    fontSize:     int = 13,
+    isHistogram: bool = False
+)
+</code>
+
+<span><i class="indicator fontBold fontSize22">INDICATOR</i></span>
+
+<code class="code">
+class IndPlotfigure: # The name must start with 'Ind'
+    def __init__(self, fig, df, symbol):  # Do not remove parameters
+
+        try:
+
+            cl   = closes(df)
+            date = dates(df)
+
+            plotFigure(
+                fig, date[-4], (cl[-1] * 1.01), 1, 'bottom', fontSize = 20
+            )
+            plotFigure(
+                fig, date[-4], (cl[-1] * 0.99), 2, 'top', fontSize = 20
+            )
+
+            plotFigure(
+                fig, date[-8], cl[-1], 1, 'right', fontSize = 20, color = 'yellow' 
+            )
+            plotFigure(
+                fig, date[-1], cl[-1], 2, 'left',  fontSize = 20, color = 'yellow'
+            ) 
+
+
+        except Exception as e:
+
+            name      = f'{self.__class__.__name__[3:]}'
+            errorMsg  = ''.join(traceback.format_exception_only(type(e), e)).strip()
+            errorLine = traceback.extract_tb(e.__traceback__)[-1].lineno
+            
+            print(f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            F_writeLog(pathLog, f"{errorMsg} -> Indicator '{name}' in Line {errorLine}")
+            pass
+</code>
+
+<span><i class="result fontBold fontSize22">RESULT</i></span>
+
+<img src="../img/figure.png" class="centerContent" style="position: relative; height: 200px; width: 300px;"/>
+
+</pre>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>  

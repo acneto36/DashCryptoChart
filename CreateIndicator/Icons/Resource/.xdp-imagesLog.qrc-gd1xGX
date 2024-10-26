@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="icon">
+    <file>../b7a639dc/saveLog.png</file>
+    <file>../ab7a7175/printLog.png</file>
+  </qresource>
+</RCC>

@@ -1,0 +1,2 @@
+BTCUSDT; 55; #41feff
+DOGEUSDT; 50; #ff05eb
