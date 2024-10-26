@@ -87,4 +87,4 @@ On the main application screen, in the **Help** menu, there is a more detailed t
     The first time you open the application, it usually takes a little longer, but if the delay is too long, it can result in an error.
 
 ## Chart
-![home](https://github.com/user-attachments/assets/6b5f291f-6ab1-45a5-b442-a69ae177b3ce)
+![home](https://github.com/user-attachments/assets/fe47e12f-62da-4881-b8da-a974b8d1cc7d)
