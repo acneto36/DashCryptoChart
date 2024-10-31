@@ -3,7 +3,7 @@
 
 Project built in **Python** using the **Dash Plotly** library for technical analysis. The purpose of this project is focused on market studies, primarily in **cryptocurrencies**.
 
-O projeto oferece:
+The project offers:
 - **Candlestick Visualization**: Displays candlestick charts for price analysis.
 - **Cryptocurrency Selection**:  Option to choose which cryptocurrency to view from a pre-selected list.
 - **Custom Indicators**:         Dedicated interface to create and view custom indicators.
